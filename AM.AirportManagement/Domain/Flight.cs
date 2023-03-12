@@ -12,7 +12,14 @@ namespace AM.AirportManagement.Domain
         public string Destination { get; set; }
         public DateTime EffectiveArrival { get; set; }
         public float EstimatedDuration { get; set; }
+        public Plane Plane { get; set; }
+        public IList<Passenger> Passengers { get; set; }
         public DateTime FlightDate { get; set; }
         public int FlightId { get; set; }
+
+        public override string ToString()
+        {
+            return $"FlightId : {FlightId}, Destination : {Destination}, FlightDate : {FlightDate}";
+        }
     }
 }

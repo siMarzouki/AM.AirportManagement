@@ -12,6 +12,7 @@ namespace AM.AirportManagement.Domain
         public DateTime ManufactureDate { get; set; }
         public int PlaneId { get; set; }
         public PlaneType PlaneType { get; set; }
+        public IList<Flight> Flights { get; set; }
         public Plane()
         { }
         public Plane(PlaneType planeType, int capacity, DateTime manufactureDate)
@@ -19,6 +20,10 @@ namespace AM.AirportManagement.Domain
             PlaneType = planeType;
             Capacity = capacity;
             ManufactureDate = manufactureDate;
+        }
+        public override string ToString()
+        {
+            return $"PlaneId : {PlaneId}, PlaneType : {PlaneType}";
         }
     }
 }

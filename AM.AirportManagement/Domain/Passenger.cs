@@ -14,5 +14,12 @@ namespace AM.AirportManagement.Domain
         public string LastName { get; set; }
         public string PassportNumber { get; set; }
         public string TelNumber { get; set; }
+        public IList<Flight> Flights { get; set; }
+        public virtual string PassengerType { get { return "Unknown passenger type"; } }
+
+        public override string ToString()
+        {
+            return $"PassportNumber : {PassportNumber}, FirstName : {FirstName}, LastName : {LastName}";
+        }
     }
 }
