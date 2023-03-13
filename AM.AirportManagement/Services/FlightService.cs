@@ -11,14 +11,16 @@ namespace AM.AirportManagement.Services
 {
     public class FlightService : IFlightService
     {
-        ICollection source;
-
-        public FlightService(ICollection source)
+        ICollection<Flight> source;
+        ShowLine showLine;
+        public FlightService(ICollection<Flight> source, ShowLine showLine)
         {
             this.source = source;
+            this.showLine = showLine;
         }
         public void ShowFlights(string filterType, string filterValue)
         {
+            showLine($"--- Filter type : {filterType}, Filter value : {filterValue} ---");
             switch (filterType)
             {
                 case "Destination":
@@ -26,7 +28,7 @@ namespace AM.AirportManagement.Services
                     {
                         if (item.Destination == filterValue)
                         {
-                            Console.WriteLine(item);
+                            showLine(item);
                         }
                     }
                     break;
@@ -37,7 +39,7 @@ namespace AM.AirportManagement.Services
                     {
                         if (item.FlightDate == flightDate)
                         {
-                            Console.WriteLine(item);
+                            showLine(item);
                         }
                     }
                     break;
@@ -48,7 +50,7 @@ namespace AM.AirportManagement.Services
                     {
                         if (item.FlightId == flightId)
                         {
-                            Console.WriteLine(item);
+                            showLine(item);
                         }
                     }
                     break;
@@ -56,7 +58,27 @@ namespace AM.AirportManagement.Services
                     throw new ArgumentException("Unknown filter");
             }
         }
-    
 
-}
+        public IEnumerable<object> GetDurationsInMinutes()
+        {
+            return source
+                .Select(e => new { e.FlightId, EstimatedDurationInMinutes = 60 * e.EstimatedDuration });
+        }
+        public IEnumerable<Flight> GetFlightsSortedByDuration()
+        {
+            return source.OrderByDescending(e => e.EstimatedDuration);
+        }
+        public float GetDurationsAverage()
+        {
+            return source.Average(e => e.EstimatedDuration);
+        }
+        public IEnumerable<string> GetPassengerTypes(int flightId)
+        {
+            return source.Where(e => e.FlightId == flightId).First().Passengers.Select(e => e.PassengerType);
+        }
+        public IEnumerable<object> GetDurationsInMinutesLINQ()
+        {
+            return from e in source select new { e.FlightId, EstimatedDurationInMinutes = 60 * e.EstimatedDuration };
+        }
+    }
 }
