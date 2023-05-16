@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace AM.ApplicationCore.Interfaces
 {
-	public interface IFlightService : IService<Flight>
+	public interface ITicketService : IService<Ticket>
 	{
-		void ShowFlights(string filterType, string filterValue);
-		IEnumerable<Flight> GetFlightsByDestination(string destination);
+		IEnumerable<Traveller> GetVIPTravellers();
+
 	}
 }

@@ -9,16 +9,19 @@ using System.Threading.Tasks;
 
 namespace AM.ApplicationCore.Services
 {
-	public class FlightService : IFlightService
+	public class FlightService :Service<Flight>, IFlightService 
 	{
 		ICollection<Flight> source;
 		ShowLine showLine;
 
-		public FlightService(ICollection<Flight> source,ShowLine showLine )
+		public FlightService(ICollection<Flight> source,ShowLine showLine ) : base(null)
 		{
 			this.source = source;	
 			this.showLine = showLine;	
+			
 		}
+		public FlightService(IUnitOfWork unitOfWork) : base(unitOfWork)
+		{ }
 
 		public void ShowFlights(string filterType, string filterValue)
 		{
@@ -75,6 +78,11 @@ namespace AM.ApplicationCore.Services
 		public IEnumerable<Object> GetDurationInMinutesLINQ()
 		{
 			return from e in source select new { e.FlightId, EstimatedDurationInMinutes = e.EstimatedDuration * 60 };
+		}
+
+		public IEnumerable<Flight> GetFlightsByDestination(string destination)
+		{
+			return GetMany(e => e.Destination == destination);
 		}
 	}
 }
